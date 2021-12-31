@@ -2,11 +2,18 @@
 
 namespace Blog\Http\Controllers\Backend;
 //use Blog\Http\Controllers\Controller;
+use Blog\Factories\NoticiaFactory;
 
 use Illuminate\Http\Request;
 
 class NoticiaController extends Controller
 {
+
+    public function index() {
+        $listado = NoticiaFactory::generarNoticias(20);
+        return view('backend.noticia.index', ['noticias' => $listado]);
+    }
+
     public function store(Request $request) {
       //Generamos un valor random que utilizaremos cono idea
       $id = substr(md5(microtime()), 0, 4);
@@ -28,12 +35,24 @@ class NoticiaController extends Controller
     public function show($id) {
 
       //Recuperamos los datos de la noticia
-      $noticia = session()->get($id);
+
+      /*$noticia = session()->get($id);
       $titulo = $noticia["titulo"];
-      $cuerpo = $noticia["cuerpo"];
+      $cuerpo = $noticia["cuerpo"];*/
 
       //Mostramos la noticia
-      return "<h1>" . $titulo . "</h1><br><p>" . $cuerpo . "</p>";
+      /*return "<h1>" . $titulo . "</h1><br><p>" . $cuerpo . "</p>";*/
+
+      /*$titulo = "Titulo de la noticia";
+      $cuerpo = "Cuerpo de la noticia";
+      return view('backend.noticia.show', ['titulo'] => $titulo, 'cuerpo' => $cuerpo]);*/
+
+      $noticia = (object) array(
+        'titulo' => "Titulo de la noticia",
+        'cuerpo' => "Cuerpo de la noticia",
+        'id' => $id);
+
+      return view('backend.noticia.show', ['noticia' => $noticia]);
 
     }
 }
