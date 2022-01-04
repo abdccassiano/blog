@@ -15,7 +15,17 @@ class CreateNoticiasTable extends Migration
     {
         Schema::create('noticias', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('titulo', 255);
+            $table->text('cuerpo');
+            $table->string('imagen', 255)->nullable();
             $table->timestamps();
+            $table->unique('titulo');
+            $table->integer('autor')->unsigned();
+            $table->foreign('autor')
+              ->references('id')
+              ->on('users')
+              ->onDelete('cascade')
+              ->onUpdate('cascade');
         });
     }
 
